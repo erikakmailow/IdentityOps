@@ -1,0 +1,4 @@
+﻿EmployeeId,FirstName,LastName,Username,Email,Department,JobTitle
+10025,Taylor,Example,texample,texample@example.com,IT,Systems Analyst
+10026,Jordan,Sample,jsample,jsample@example.com,Finance,Accountant
+10026,Casey,Duplicate,cduplicate,cduplicate@example.com,IT,Technician

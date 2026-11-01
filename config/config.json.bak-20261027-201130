@@ -1,0 +1,41 @@
+﻿{
+    "ProjectName": "BLACKBOX IdentityOps",
+    "Version": "0.1.0",
+    "Environment": "Development",
+    "Execution": {
+        "DryRun": true,
+        "AllowProductionChanges": false,
+        "RequireApproval": true
+    },
+    "Logging": {
+        "Enabled": true,
+        "LogDirectory": "logs",
+        "ReportDirectory": "reports",
+        "MinimumLevel": "Information",
+        "NeverLogPasswords": true
+    },
+    "Providers": {
+        "ActiveDirectory": {
+            "Enabled": false,
+            "Server": "",
+            "SearchBase": ""
+        },
+        "EntraID": {
+            "Enabled": false,
+            "TenantId": ""
+        },
+        "ADP": {
+            "Enabled": false,
+            "Product": "Workforce Now"
+        },
+        "Oracle": {
+            "Enabled": false,
+            "Product": "HCM Cloud"
+        }
+    },
+    "Security": {
+        "ExcludePrivilegedGroups": true,
+        "RequireOffboardingApproval": true,
+        "GenerateTemporaryPasswords": true
+    }
+}

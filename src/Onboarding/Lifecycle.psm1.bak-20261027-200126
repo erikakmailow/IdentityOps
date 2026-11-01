@@ -1,0 +1,60 @@
+﻿Import-Module (Join-Path $PSScriptRoot "..\Core\Validation.psm1") -Force
+Import-Module (Join-Path $PSScriptRoot "..\Core\Logging.psm1") -Force
+
+function Invoke-IdentityOpsLifecyclePreview {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateSet("Onboarding", "Offboarding")]
+        [string]$Action,
+
+        [Parameter(Mandatory)]
+        [PSObject]$Employee,
+
+        [string]$CorrelationId = [guid]::NewGuid().ToString()
+    )
+
+    $validation = Test-IdentityOpsEmployee -Employee $Employee
+
+    if (-not $validation.IsValid) {
+        Write-IdentityOpsLog -Level WARN `
+            -Operation $Action `
+            -CorrelationId $CorrelationId `
+            -Message "Lifecycle preview rejected because employee validation failed."
+
+        return [PSCustomObject]@{
+            Action        = $Action
+            Status        = "Rejected"
+            EmployeeId    = [string]$Employee.EmployeeId
+            CorrelationId = $CorrelationId
+            Errors        = @($validation.Errors)
+            DryRun        = $true
+            ChangesApplied = $false
+        }
+    }
+
+    $message = if ($Action -eq "Onboarding") {
+        "Employee passed validation. Account creation is preview-only."
+    } else {
+        "Employee passed validation. Offboarding is preview-only."
+    }
+
+    Write-IdentityOpsLog -Level AUDIT `
+        -Operation $Action `
+        -CorrelationId $CorrelationId `
+        -Message "$message EmployeeId=$($Employee.EmployeeId)"
+
+    [PSCustomObject]@{
+        Action         = $Action
+        Status         = "Preview"
+        EmployeeId     = [string]$Employee.EmployeeId
+        Username       = [string]$Employee.Username
+        CorrelationId  = $CorrelationId
+        Errors         = @()
+        DryRun         = $true
+        ChangesApplied = $false
+        Message        = $message
+    }
+}
+
+Export-ModuleMember -Function "Invoke-IdentityOpsLifecyclePreview"
