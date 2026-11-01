@@ -79,7 +79,3 @@ IdentityOps/
 - Treat generated passwords as secrets.
 - Basic log redaction does not replace safe handling of sensitive data.
 - Live identity changes require least-privilege access, independently enforced authorization and approval, auditability, and testing in a dedicated environment.
-
-## License
-
-No license has been selected yet. Choose a license before distributing the project.
